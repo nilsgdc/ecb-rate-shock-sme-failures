@@ -1,0 +1,45 @@
+# Virtual environments
+*-env/
+venv/
+.venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Raw data: keep the folder structure, ignore the actual files until we
+# decide which are small enough to commit (see README "Data sources").
+data/raw/**
+!data/raw/**/
+!data/raw/**/.gitkeep
+
+# Secrets
+.env
+*.key
+.kaggle/
+kaggle.json
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Claude
+.claude/
