@@ -1,17 +1,13 @@
 """
-Centralised loading functions for all datasets of the ECB-rate / SME-failures study.
+Loading functions for the study's datasets.
 
-These are documented stubs: the exact parsing logic depends on the precise file
-formats downloaded from Banque de France Webstat, data.gouv.fr (ZFRR, SIRENE) and
-INSEE, which are filled in during the data-ingestion phase (notebook 01).
-
-Expected raw layout (see README "Data sources"):
+Expected raw layout:
 
     data/raw/
-    ├── banque_de_france/   # credit by NAF sector + failures by sector & size (monthly)
-    ├── bce_rates/          # ECB policy-rate history
-    ├── zfrr/               # ZFRR / ZFRR+ municipality list
-    └── sirene/             # SIRENE business registry (SME counts per sector)
+    ├── banque_de_france/   credit by NAF sector + failures by sector & size (monthly)
+    ├── bce_rates/          ECB policy-rate history
+    ├── zfrr/               ZFRR / ZFRR+ municipality list
+    └── sirene/             SME counts per sector
 """
 from pathlib import Path
 
@@ -28,70 +24,43 @@ SIRENE_DIR = RAW_DIR / "sirene"
 
 def load_credit_by_sector() -> pd.DataFrame:
     """
-    Load monthly credit outstanding by NAF sector (treasury vs total) from
-    Banque de France Webstat.
+    Monthly credit outstanding by NAF sector (treasury vs total), Banque de France.
 
-    Returns
-    -------
-    pd.DataFrame
-        Indexed by (date, naf_sector), with columns for treasury credit and
-        total credit outstanding. Used to build the credit-intensity ratio
-        that defines the treatment group.
+    Indexed by (date, naf_sector), with treasury and total credit columns. Feeds the
+    credit-intensity ratio that defines the treatment group.
     """
-    raise NotImplementedError("Implemented in the data-ingestion phase (notebook 01).")
+    raise NotImplementedError
 
 
 def load_failures() -> pd.DataFrame:
     """
-    Load monthly business-failure counts by NAF sector and firm-size class
-    (Banque de France).
+    Monthly business-failure counts by NAF sector and firm-size class, Banque de France.
 
-    'Failure' = opening of a redressement or liquidation judiciaire only
-    (see README). Excludes voluntary closures, deregistrations, disposals.
-
-    Returns
-    -------
-    pd.DataFrame
-        Indexed by (date, naf_sector, size_class), with a failure-count column.
-        This is the dependent variable of the DiD model.
+    A failure is the opening of a redressement or liquidation judiciaire only. Indexed by
+    (date, naf_sector, size_class); the failure count is the dependent variable.
     """
-    raise NotImplementedError("Implemented in the data-ingestion phase (notebook 01).")
+    raise NotImplementedError
 
 
 def load_ecb_rates() -> pd.DataFrame:
     """
-    Load the ECB policy-rate history (main refinancing / deposit facility rate).
+    ECB policy rates (main refinancing and deposit facility), date-indexed.
 
-    Returns
-    -------
-    pd.DataFrame
-        Date-indexed policy rates. The first hike (July 2022) is the DiD
-        treatment date.
+    The first hike (July 2022) is the difference-in-differences treatment date.
     """
-    raise NotImplementedError("Implemented in the data-ingestion phase (notebook 01).")
+    raise NotImplementedError
 
 
 def load_zfrr_communes() -> pd.DataFrame:
     """
-    Load the list of municipalities classified ZFRR / ZFRR+ (data.gouv.fr).
-
-    Returns
-    -------
-    pd.DataFrame
-        One row per commune (INSEE code), with the ZFRR classification flag,
-        used for the territorial-equity interaction term.
+    Municipalities classified ZFRR / ZFRR+, one row per commune (INSEE code) with the
+    classification flag. Feeds the territorial interaction term.
     """
-    raise NotImplementedError("Implemented in the data-ingestion phase (notebook 01).")
+    raise NotImplementedError
 
 
 def load_sirene_sme_counts() -> pd.DataFrame:
     """
-    Load SME counts per NAF sector from the SIRENE registry, used to weight
-    failure rates by the number of SMEs at risk in each sector.
-
-    Returns
-    -------
-    pd.DataFrame
-        SME counts indexed by NAF sector (and optionally commune/region).
+    SME counts per NAF sector, used to weight failure rates by the number of SMEs at risk.
     """
-    raise NotImplementedError("Implemented in the data-ingestion phase (notebook 01).")
+    raise NotImplementedError

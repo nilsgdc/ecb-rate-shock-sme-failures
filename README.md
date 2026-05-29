@@ -1,11 +1,8 @@
 # ECB Rate Shock & SME Failures — A Causal Study of French Firms
 
-A difference-in-differences study measuring whether the 2022 ECB rate hikes
-accelerated business failures among French SMEs in credit-intensive sectors,
-with a territorial-equity dimension.
-
-> **Status:** work in progress. The framing, definitions and methodology below are
-> fixed; data ingestion, cleaning and the causal analysis are being built.
+Difference-in-differences estimate of whether the 2022 ECB rate hikes accelerated
+failures among French SMEs in credit-intensive sectors, and whether the effect was
+stronger in economically fragile regions.
 
 ---
 
@@ -13,84 +10,63 @@ with a territorial-equity dimension.
 
 > Did SMEs in sectors with high short-term credit intensity experience a
 > statistically significant acceleration in failures in the 18 months following
-> the first ECB rate hike (July 2022), relative to their 2015–2019 historical
-> trend — and is this effect more pronounced in economically fragile regions?
+> the first ECB rate hike (July 2022), relative to their 2015–2019 trend — and is
+> this effect more pronounced in economically fragile regions?
 
 ---
 
 ## Operational definitions
 
-The three key terms of the question are **not** off-the-shelf categories — they are
-constructed and justified inside the study. This is what separates a senior analysis
-from one that assumes its premises without grounding them.
+The three terms in the question — *SME*, *credit-intensive sector*, *fragile region* —
+are defined and constructed in the study, not assumed.
 
-### 1. SME (PME)
+### SME
 
-- **Legal basis:** *Loi de modernisation de l'économie* (LME) of 4 August 2008,
-  article 51, decree n°2008-1354 of 18 December 2008.
-- **Criterion used:** fewer than 250 employees.
-- **Why:** this is the nomenclature the Banque de France and INSEE use in their
-  publications on business failures. Aligning the question with the granularity of
-  the available data avoids rebuilding a segmentation from raw court-registry data.
+Fewer than 250 employees, per the *Loi de modernisation de l'économie* of 4 August 2008
+(decree n°2008-1354). This is the threshold the Banque de France and INSEE use in their
+failure statistics, so it sets the granularity of the analysis.
 
-### 2. Credit-intensive sectors
+### Credit-intensive sectors
 
-- There is **no official list** of these sectors — this is an analytical construction
-  produced in the study (roadmap step 1, documented in the notebooks).
-- **Method:** compute the ratio (short-term/treasury credit outstanding ÷ total credit
-  outstanding) per NAF sector over 2018–2021, from Banque de France monthly data (Webstat).
-- Sectors whose ratio exceeds a defined and justified threshold form the **treatment
-  group** of the difference-in-differences design.
+No official list exists. Each NAF sector is ranked by the ratio of short-term (treasury)
+credit to total credit outstanding over 2018–2021, from Banque de France monthly data.
+Sectors above the chosen threshold form the treatment group.
 
-### 3. Economically fragile regions (ZFRR)
+### Economically fragile regions
 
-- **Official definition:** municipalities classified as *Zone France Ruralités
-  Revitalisation* (ZFRR), introduced by the 2024 budget law (article 73), in force
-  since 1 July 2024. These zones replace the former ZRR, BER and ZORCOMIR.
-- **Classification criterion:** a synthetic index of income, population and employment
-  dynamics over at least 10 years. The lowest-index municipalities are classified ZFRR+.
-- The list of municipalities is published by decree and available as open data.
+Municipalities classified *Zone France Ruralités Revitalisation* (ZFRR) under the 2024
+budget law (article 73, in force since 1 July 2024), which replaced the former ZRR, BER
+and ZORCOMIR. Classification rests on a synthetic index of income, population and
+employment over at least ten years; the lowest-index municipalities are classified ZFRR+.
 
 ---
 
-## Methodology
+## Method
 
-- **Design:** Difference-in-differences (DiD).
-- **Rupture / treatment date:** July 2022 — the first ECB policy-rate hike.
-- **Baseline:** 2015–2019 historical trend (deliberately clean of any COVID effect).
-- **Treatment group:** high short-term-credit-intensity NAF sectors (constructed, see above).
-- **Control group:** low-credit-intensity sectors.
-- **Dependent variable:** monthly business failures (Banque de France definition, see below).
-- **Territorial interaction:** ZFRR vs non-ZFRR, to test whether already-fragile areas
-  paid an additional price for monetary tightening.
+Difference-in-differences on monthly business-failure counts by sector and firm size.
 
----
-
-## The central methodological challenge: rate effect vs COVID/PGE rebound
-
-State-guaranteed loans (*Prêts Garantis par l'État*, 2020–2021) artificially suppressed
-business failures during the health crisis, creating a rebound effect in 2022–2023 that
-**superimposes itself on the ECB-rate effect**. Disentangling the two is the real
-challenge of this project, and what makes it original:
-
-- The 2015–2019 baseline must be clean of any COVID effect.
-- The 2020–2021 period must be excluded from the analysis or treated as an anomaly.
-- The analysis must explicitly document this limitation and the chosen method to address
-  it — which is more rigorous than ignoring it.
+- **Treatment date:** July 2022 — the first ECB policy-rate hike.
+- **Baseline:** 2015–2019.
+- **Treatment group:** high credit-intensity NAF sectors; **control:** low-intensity sectors.
+- **Dependent variable:** monthly failures (Banque de France definition, below).
+- **Territorial interaction:** ZFRR vs non-ZFRR.
 
 ---
 
-## Definition of "failure" (precise legal term)
+## Separating the rate effect from the COVID/PGE rebound
 
-Per the Banque de France and INSEE, a business **failure** (*défaillance*) is the opening
-of a collective insolvency proceeding triggered by a declaration of cessation of payments.
-It covers **only**:
+State-guaranteed loans (*Prêts Garantis par l'État*, 2020–2021) suppressed failures during
+the pandemic and produced a rebound in 2022–2023 that overlaps the rate effect. The analysis
+separates the two by anchoring the baseline on 2015–2019 and treating 2020–2021 as an
+excluded anomaly window.
 
-- *Redressements judiciaires* (judicial reorganisation)
-- *Liquidations judiciaires* (judicial liquidation)
+---
 
-It does **not** include voluntary closures, deregistrations, or disposals. The term is used
-strictly with this definition throughout the study.
+## Definition of failure
+
+A failure (*défaillance*) is the opening of a *redressement* or *liquidation judiciaire*
+following a declaration of cessation of payments (Banque de France / INSEE). Voluntary
+closures, deregistrations and disposals are excluded.
 
 ---
 
@@ -98,14 +74,14 @@ strictly with this definition throughout the study.
 
 ```
 ├── notebooks/
-│   ├── 01_exploration.ipynb    # Data discovery: credit by sector, failures, ZFRR, rates
-│   ├── 02_cleaning.ipynb       # Treatment-group construction, baseline, processed exports
-│   └── 03_analysis.ipynb       # DiD, PGE/COVID handling, territorial interaction
+│   ├── 01_exploration.ipynb    # Credit by sector, failures, ZFRR, rates
+│   ├── 02_cleaning.ipynb       # Treatment-group construction, baseline, exports
+│   └── 03_analysis.ipynb       # DiD, COVID/PGE handling, territorial interaction
 ├── src/
-│   ├── data_loader.py          # Centralised loading functions for all datasets
-│   └── cleaning.py             # Reusable cleaning pipeline
+│   ├── data_loader.py          # Loading functions for all datasets
+│   └── cleaning.py             # Cleaning and feature construction
 ├── data/
-│   ├── raw/                    # Source files (see Data sources)
+│   ├── raw/                    # Source files
 │   └── processed/              # Cleaned exports
 ├── outputs/                    # Generated figures
 ├── requirements.txt
@@ -118,29 +94,21 @@ strictly with this definition throughout the study.
 
 | Dataset | Source | Use |
 |---------|--------|-----|
-| Credit outstanding by NAF sector (treasury vs total), monthly | [Banque de France — Webstat](https://webstat.banque-france.fr/) | Build the credit-intensity ratio (treatment definition) |
+| Credit outstanding by NAF sector (treasury vs total), monthly | [Banque de France — Webstat](https://webstat.banque-france.fr/) | Credit-intensity ratio (treatment definition) |
 | Business failures by sector and firm size, monthly | [Banque de France — Webstat](https://webstat.banque-france.fr/) | Dependent variable |
-| ECB policy-rate history | [ECB](https://www.ecb.europa.eu/) / Banque de France | Temporal rupture (July 2022) |
-| ZFRR / ZFRR+ municipality list | [data.gouv.fr](https://www.data.gouv.fr/) | Territorial-fragility classification |
-| SIRENE business registry | [data.gouv.fr](https://www.data.gouv.fr/) / INSEE | Weight sectors by number of SMEs |
-| Sectoral & price indices | [INSEE](https://www.insee.fr/) | Context and control variables |
-
-See **[DATA_SETUP.md](DATA_SETUP.md)** for the step-by-step download guide (exact
-portals, what to export, and where each file goes in `data/raw/`).
+| ECB policy-rate history | [ECB](https://www.ecb.europa.eu/) / Banque de France | Treatment date (July 2022) |
+| ZFRR / ZFRR+ municipality list | [data.gouv.fr](https://www.data.gouv.fr/) | Territorial classification |
+| SME counts by sector | [INSEE](https://www.insee.fr/) | Weighting by SMEs at risk |
+| Sectoral & price indices | [INSEE](https://www.insee.fr/) | Control variables |
 
 ---
 
 ## Limitations
 
-1. **PGE / COVID rebound confounding** — the dominant threat to internal validity
-   (see the dedicated section above).
-2. **Treatment-group construction** — the credit-intensity threshold is a modelling
-   choice; robustness to alternative thresholds will be tested.
-3. **Aggregation level** — failures are observed by sector and size class, not per firm,
-   which limits the controls that can be included.
-4. **ZFRR timing** — the ZFRR classification is in force since July 2024; using it as a
-   proxy for the fragility of territories during 2022–2023 assumes territorial fragility
-   is structurally stable over the period.
+1. **PGE / COVID rebound** — the main confounder; addressed by the baseline and exclusion-window design above.
+2. **Treatment threshold** — the credit-intensity cut-off is a modelling choice, tested against alternative thresholds.
+3. **Aggregation** — failures are observed by sector and size class, not per firm.
+4. **ZFRR timing** — the classification is in force from July 2024 and is used as a proxy for territorial fragility over 2022–2023.
 
 ---
 
