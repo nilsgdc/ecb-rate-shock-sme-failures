@@ -125,6 +125,9 @@ strictly with this definition throughout the study.
 | SIRENE business registry | [data.gouv.fr](https://www.data.gouv.fr/) / INSEE | Weight sectors by number of SMEs |
 | Sectoral & price indices | [INSEE](https://www.insee.fr/) | Context and control variables |
 
+See **[DATA_SETUP.md](DATA_SETUP.md)** for the step-by-step download guide (exact
+portals, what to export, and where each file goes in `data/raw/`).
+
 ---
 
 ## Limitations
