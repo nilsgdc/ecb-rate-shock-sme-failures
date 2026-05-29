@@ -12,21 +12,21 @@ BASELINE_END = "2019-12-31"
 COVID_START = "2020-01-01"
 COVID_END = "2021-12-31"
 
-# Window over which the credit-intensity ratio is computed.
-INTENSITY_WINDOW = ("2018-01-01", "2021-12-31")
+# Years over which the bank-credit-dependence ratio is averaged to classify sectors.
+DEPENDENCE_WINDOW = (2018, 2021)
 
 
-def credit_intensity_ratio(credit: pd.DataFrame) -> pd.Series:
+def bank_credit_dependence(debt_structure: pd.DataFrame) -> pd.Series:
     """
-    Ratio of short-term/treasury credit to total credit per NAF sector over
-    INTENSITY_WINDOW. Basis for splitting sectors into treatment and control.
+    Share of bank debt in total financial debt per NAF sector, averaged over
+    DEPENDENCE_WINDOW. Basis for splitting sectors into treatment and control.
     """
     raise NotImplementedError
 
 
-def assign_treatment(intensity: pd.Series, threshold: float) -> pd.DataFrame:
+def assign_treatment(dependence: pd.Series, threshold: float) -> pd.DataFrame:
     """
-    Split sectors into treatment/control on a credit-intensity threshold.
+    Split sectors into treatment/control on a bank-credit-dependence threshold.
     Returns one row per NAF sector with a boolean `treated` column.
     """
     raise NotImplementedError

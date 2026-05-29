@@ -4,7 +4,7 @@ Loading functions for the study's datasets.
 Expected raw layout:
 
     data/raw/
-    ├── banque_de_france/   credit by NAF sector + failures by sector & size (monthly)
+    ├── banque_de_france/   sector debt structure (FIBEN, annual) + failures by sector & size (monthly)
     ├── bce_rates/          ECB policy-rate history
     ├── zfrr/               ZFRR / ZFRR+ municipality list
     └── sirene/             SME counts per sector
@@ -22,12 +22,13 @@ ZFRR_DIR = RAW_DIR / "zfrr"
 SIRENE_DIR = RAW_DIR / "sirene"
 
 
-def load_credit_by_sector() -> pd.DataFrame:
+def load_sector_debt_structure() -> pd.DataFrame:
     """
-    Monthly credit outstanding by NAF sector (treasury vs total), Banque de France.
+    Annual FIBEN balance-sheet ratios by NAF sector (Banque de France): share of bank
+    debt in total financial debt, financial leverage, working-capital need.
 
-    Indexed by (date, naf_sector), with treasury and total credit columns. Feeds the
-    credit-intensity ratio that defines the treatment group.
+    Indexed by (year, naf_sector). The bank-debt share, averaged over 2018–2021, defines
+    the treatment group.
     """
     raise NotImplementedError
 

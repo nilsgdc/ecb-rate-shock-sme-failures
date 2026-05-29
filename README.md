@@ -1,23 +1,23 @@
 # ECB Rate Shock & SME Failures — A Causal Study of French Firms
 
 Difference-in-differences estimate of whether the 2022 ECB rate hikes accelerated
-failures among French SMEs in credit-intensive sectors, and whether the effect was
-stronger in economically fragile regions.
+failures among French SMEs in bank-credit-dependent sectors, and whether the effect
+was stronger in economically fragile regions.
 
 ---
 
 ## Research question
 
-> Did SMEs in sectors with high short-term credit intensity experience a
-> statistically significant acceleration in failures in the 18 months following
-> the first ECB rate hike (July 2022), relative to their 2015–2019 trend — and is
-> this effect more pronounced in economically fragile regions?
+> Did SMEs in sectors that rely heavily on bank credit experience a statistically
+> significant acceleration in failures in the 18 months following the first ECB
+> rate hike (July 2022), relative to their 2015–2019 trend — and is this effect
+> more pronounced in economically fragile regions?
 
 ---
 
 ## Operational definitions
 
-The three terms in the question — *SME*, *credit-intensive sector*, *fragile region* —
+The three terms in the question — *SME*, *bank-credit-dependent sector*, *fragile region* —
 are defined and constructed in the study, not assumed.
 
 ### SME
@@ -26,11 +26,19 @@ Fewer than 250 employees, per the *Loi de modernisation de l'économie* of 4 Aug
 (decree n°2008-1354). This is the threshold the Banque de France and INSEE use in their
 failure statistics, so it sets the granularity of the analysis.
 
-### Credit-intensive sectors
+### Bank-credit-dependent sectors
 
-No official list exists. Each NAF sector is ranked by the ratio of short-term (treasury)
-credit to total credit outstanding over 2018–2021, from Banque de France monthly data.
-Sectors above the chosen threshold form the treatment group.
+No official list exists. Each NAF sector is ranked by the **share of bank debt in total
+financial debt** (bank vs bond vs leasing) — the FIBEN ratio *part des dettes bancaires* —
+averaged over 2018–2021. Bank debt is the channel through which ECB rate hikes reach firms:
+bank lending rates reprice, whereas bonds are fixed at issuance and leasing is contractual.
+Sectors most reliant on bank debt are therefore the most exposed to monetary tightening.
+Sectors above the chosen threshold form the treatment group; financial leverage
+(*taux d'endettement financier*) and working-capital need (*BFR*) are used as robustness checks.
+
+The maturity split (short-term vs long-term credit) is not available by sector in open
+Banque de France data, which reports debt by instrument rather than by maturity; bank-debt
+share is the available proxy for exposure to the bank-lending-rate channel.
 
 ### Economically fragile regions
 
@@ -47,7 +55,7 @@ Difference-in-differences on monthly business-failure counts by sector and firm 
 
 - **Treatment date:** July 2022 — the first ECB policy-rate hike.
 - **Baseline:** 2015–2019.
-- **Treatment group:** high credit-intensity NAF sectors; **control:** low-intensity sectors.
+- **Treatment group:** NAF sectors with high bank-credit dependence; **control:** low-dependence sectors.
 - **Dependent variable:** monthly failures (Banque de France definition, below).
 - **Territorial interaction:** ZFRR vs non-ZFRR.
 
@@ -74,7 +82,7 @@ closures, deregistrations and disposals are excluded.
 
 ```
 ├── notebooks/
-│   ├── 01_exploration.ipynb    # Credit by sector, failures, ZFRR, rates
+│   ├── 01_exploration.ipynb    # Sector debt structure, failures, ZFRR, rates
 │   ├── 02_cleaning.ipynb       # Treatment-group construction, baseline, exports
 │   └── 03_analysis.ipynb       # DiD, COVID/PGE handling, territorial interaction
 ├── src/
@@ -94,7 +102,7 @@ closures, deregistrations and disposals are excluded.
 
 | Dataset | Source | Use |
 |---------|--------|-----|
-| Credit outstanding by NAF sector (treasury vs total), monthly | [Banque de France — Webstat](https://webstat.banque-france.fr/) | Credit-intensity ratio (treatment definition) |
+| Sector debt structure (bank / bond / leasing shares), annual — FIBEN balance-sheet ratios | [Banque de France — Webstat](https://webstat.banque-france.fr/) | Bank-credit-dependence ratio (treatment definition) |
 | Business failures by sector and firm size, monthly | [Banque de France — Webstat](https://webstat.banque-france.fr/) | Dependent variable |
 | ECB policy-rate history | [ECB](https://www.ecb.europa.eu/) / Banque de France | Treatment date (July 2022) |
 | ZFRR / ZFRR+ municipality list | [data.gouv.fr](https://www.data.gouv.fr/) | Territorial classification |
@@ -106,9 +114,10 @@ closures, deregistrations and disposals are excluded.
 ## Limitations
 
 1. **PGE / COVID rebound** — the main confounder; addressed by the baseline and exclusion-window design above.
-2. **Treatment threshold** — the credit-intensity cut-off is a modelling choice, tested against alternative thresholds.
-3. **Aggregation** — failures are observed by sector and size class, not per firm.
-4. **ZFRR timing** — the classification is in force from July 2024 and is used as a proxy for territorial fragility over 2022–2023.
+2. **Treatment proxy** — open Banque de France data reports debt by instrument (bank/bond/leasing), not by maturity, so bank-credit dependence proxies exposure to the bank-lending-rate channel rather than measuring short-term credit directly.
+3. **Treatment threshold** — the bank-credit-dependence cut-off is a modelling choice, tested against alternative thresholds.
+4. **Aggregation** — failures are observed by sector and size class, not per firm.
+5. **ZFRR timing** — the classification is in force from July 2024 and is used as a proxy for territorial fragility over 2022–2023.
 
 ---
 
