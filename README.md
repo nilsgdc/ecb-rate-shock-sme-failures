@@ -15,6 +15,43 @@ was stronger in economically fragile regions.
 
 ---
 
+## Key findings (sectoral analysis)
+
+| Estimate | Value |
+|----------|-------|
+| Common post-2022 change in failures (all sectors) | +8% |
+| DiD — median split, 9 sectors | **−8.1%** (p = 0.35, not significant) |
+| DiD — sharp split (top-3 vs bottom-3 dependence) | −15.1% (p = 0.08) |
+| Placebo — fake 2018 break in the baseline | +1.2% (p = 0.87) |
+
+After the July 2022 hike, SME failures rose broadly across all sectors. But the
+bank-credit-dependent sectors did **not** experience a larger increase — if anything
+the point estimates lean slightly negative. No DiD estimate is significant at
+conventional levels (only nine sectors limit statistical power), and the baseline
+placebo is clean, which supports the identification. On this evidence the rate shock
+did not disproportionately accelerate failures among bank-dependent SMEs in the
+18 months after the first hike — a plausible reading is that the most bank-dependent
+sectors (hospitality, retail, agriculture) were also the most heavily cushioned by
+state-guaranteed loans.
+
+![Treatment vs control by bank-credit dependence](outputs/treatment_split.png)
+
+*Sectors split at the median bank-debt share: treated (red) vs control (grey).*
+
+![Failures by group with the excluded COVID/PGE window](outputs/panel_windows.png)
+
+*Sector-mean failures (indexed to 2019). Parallel pre-2020 trends; the grey band (2020–mid-2022) is excluded; the dashed line is the July 2022 hike.*
+
+![DiD decomposition](outputs/did_decomposition.png)
+
+*Baseline vs post-hike means for treated and control, with the counterfactual and the resulting difference-in-differences gap.*
+
+> **Territorial dimension (in progress).** The ZFRR equity question is a separate
+> department-level analysis (department failures vs ZFRR intensity), pending the
+> national commune-level FRR list — see *Limitations* and *Data sources*.
+
+---
+
 ## Operational definitions
 
 The three terms in the question — *SME*, *bank-credit-dependent sector*, *fragile region* —
@@ -57,7 +94,8 @@ Difference-in-differences on monthly business-failure counts by sector and firm 
 - **Baseline:** 2015–2019.
 - **Treatment group:** NAF sectors with high bank-credit dependence; **control:** low-dependence sectors.
 - **Dependent variable:** monthly failures (Banque de France definition, below).
-- **Territorial interaction:** ZFRR vs non-ZFRR.
+- **Inference:** OLS in logs with sector fixed effects, standard errors clustered by sector.
+- **Territorial analysis (separate):** department-level failures against each department's ZFRR intensity, around the same July 2022 break. Run as its own analysis because failures are available either by sector (national) or by department (all sectors), never crossed.
 
 ---
 
@@ -84,7 +122,8 @@ closures, deregistrations and disposals are excluded.
 ├── notebooks/
 │   ├── 01_exploration.ipynb    # Sector debt structure, failures, ZFRR, rates
 │   ├── 02_cleaning.ipynb       # Treatment-group construction, baseline, exports
-│   └── 03_analysis.ipynb       # DiD, COVID/PGE handling, territorial interaction
+│   ├── 03_analysis.ipynb       # Sectoral DiD, robustness, placebo
+│   └── 04_territorial.ipynb    # Department-level ZFRR analysis (planned)
 ├── src/
 │   ├── data_loader.py          # Loading functions for all datasets
 │   └── cleaning.py             # Cleaning and feature construction
