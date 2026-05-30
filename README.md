@@ -46,9 +46,30 @@ state-guaranteed loans.
 
 *Baseline vs post-hike means for treated and control, with the counterfactual and the resulting difference-in-differences gap.*
 
-> **Territorial dimension (in progress).** The ZFRR equity question is a separate
-> department-level analysis (department failures vs ZFRR intensity), pending the
-> national commune-level FRR list — see *Limitations* and *Data sources*.
+---
+
+## Key findings (territorial analysis)
+
+A separate department-level difference-in-differences. Failures are available by sector
+nationally *or* by department for all firms, never crossed, so the ZFRR equity question is
+its own analysis. Departments are split at the median share of their communes classified ZFRR.
+
+| Estimate | Value |
+|----------|-------|
+| DiD — high vs low ZFRR intensity (median split, ~100 depts) | **−8.8%** (p = 0.026) |
+| DiD — continuous ZFRR intensity (per +1.0 share) | −18.1% (p = 0.010) |
+| Placebo — fake 2018 break | −2.6% (p = 0.23, not significant) |
+
+With around a hundred departments the inference is far better powered than the nine-sector
+analysis. Failures did **not** accelerate more in fragile (ZFRR) departments after the
+hike — the effect is negative and significant, i.e. more-rural departments saw a *smaller*
+post-2022 rise in failures. This mirrors the sectoral result, plausibly because rural
+economies are less business-dense and weighted toward heavily-supported activities such as
+agriculture.
+
+![Territorial DiD decomposition](outputs/dept_did_decomposition.png)
+
+*Baseline vs post-hike mean log failures, high- vs low-ZFRR departments, with the DiD gap.*
 
 ---
 
@@ -123,7 +144,7 @@ closures, deregistrations and disposals are excluded.
 │   ├── 01_exploration.ipynb    # Sector debt structure, failures, ZFRR, rates
 │   ├── 02_cleaning.ipynb       # Treatment-group construction, baseline, exports
 │   ├── 03_analysis.ipynb       # Sectoral DiD, robustness, placebo
-│   └── 04_territorial.ipynb    # Department-level ZFRR analysis (planned)
+│   └── 04_territorial.ipynb    # Department-level ZFRR difference-in-differences
 ├── src/
 │   ├── data_loader.py          # Loading functions for all datasets
 │   └── cleaning.py             # Cleaning and feature construction

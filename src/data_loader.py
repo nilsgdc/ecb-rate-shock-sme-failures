@@ -115,3 +115,63 @@ def load_ecb_rates() -> pd.DataFrame:
         "deposit_facility": depo.resample("MS").last(),
     })
     return monthly
+
+
+_DOM = {"971", "972", "973", "974", "975", "976"}
+
+
+def _commune_to_dept(code: str) -> str:
+    """Department code from a 5-char INSEE commune code (handles Corsica 2A/2B and DOM)."""
+    return code[:3] if code[:3] in _DOM else code[:2]
+
+
+def load_failures_by_department() -> pd.DataFrame:
+    """
+    Monthly all-firms business failures by department (Banque de France).
+
+    Only the all-sizes / all-sectors series exists at department level, so this is
+    not PME-specific (SMEs are ~99% of firms, so it is a close proxy). 12-month
+    rolling cumulative count. Returns a tidy frame: date, dept, failures.
+    """
+    df = _read_bdf(BDF_DIR / "failures_by_sector_size.csv")
+    df = df[
+        df["REF_AREA"].str.match(r"^D", na=False)
+        & (df["FREQ"] == "M")
+        & (df["DIREN_TAILLENT"] == "TT")
+        & (df["DIREN_SECTACT"] == "ZZ")
+        & df["time_period"].str.match(r"^\d{4}-\d{2}$", na=False)
+    ].copy()
+    df["date"] = pd.to_datetime(df["time_period"], format="%Y-%m")
+    df["dept"] = df["REF_AREA"].str[1:]
+    return (df[["date", "dept", "value"]].rename(columns={"value": "failures"})
+            .sort_values(["dept", "date"]).reset_index(drop=True))
+
+
+# Observatoire des Territoires FRR code -> meaning. The codes are not documented in
+# the export; the mapping below is inferred from the exact match between code counts
+# and the official published figures (FRR+ ~4,500; FRR socle+plus ~17,700; ZRR
+# transitional ~2,168). To be confirmed against the OdT legend.
+FRR_CODE_MAP = {"5": "FRR+", "4": "FRR socle", "1": "ZRR transitional"}
+
+
+def load_frr_communes() -> pd.DataFrame:
+    """
+    National commune-level France Ruralités Revitalisation classification
+    (Observatoire des Territoires export).
+
+    Returns: codgeo, dept, frr_code, frr_label, classified (FRR socle or +),
+    frr_plus (FRR+ only). The file has title rows and an undocumented numeric
+    coding, so rows are filtered to valid INSEE commune codes and mapped via
+    FRR_CODE_MAP.
+    """
+    raw = pd.read_csv(ZFRR_DIR / "data.csv", sep=";", encoding="utf-8",
+                      dtype=str, header=None)
+    raw = raw.iloc[:, :3]
+    raw.columns = ["codgeo", "libelle", "frr_code"]
+    mask = raw["codgeo"].str.match(r"^(\d{5}|2[AB]\d{3})$", na=False)
+    df = raw[mask].drop_duplicates(subset="codgeo").copy()
+    df["frr_label"] = df["frr_code"].map(FRR_CODE_MAP).fillna("not classified")
+    df["dept"] = df["codgeo"].map(_commune_to_dept)
+    df["classified"] = df["frr_code"].isin(["4", "5"])
+    df["frr_plus"] = df["frr_code"] == "5"
+    return df[["codgeo", "dept", "frr_code", "frr_label", "classified", "frr_plus"]]

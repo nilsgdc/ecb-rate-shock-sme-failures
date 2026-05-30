@@ -83,3 +83,26 @@ def build_panel(failures: pd.DataFrame, treatment: pd.DataFrame) -> pd.DataFrame
     panel["in_covid"] = panel["date"].between(COVID_START, COVID_END)
     panel["in_sample"] = panel["in_baseline"] | (panel["date"] >= ECB_FIRST_HIKE)
     return panel.sort_values(["sector", "date"]).reset_index(drop=True)
+
+
+def zfrr_intensity_by_department(frr: pd.DataFrame) -> pd.Series:
+    """Share of a department's communes classified FRR (treatment intensity)."""
+    return frr.groupby("dept")["classified"].mean().rename("zfrr_share")
+
+
+def build_dept_panel(dept_failures: pd.DataFrame, intensity: pd.Series,
+                     threshold=None) -> pd.DataFrame:
+    """
+    Department-level panel for the territorial analysis: one row per (dept, month)
+    with the failure count, ZFRR intensity, treatment/post/DiD indicators and window
+    flags. Treatment = departments with above-median ZFRR intensity.
+    """
+    if threshold is None:
+        threshold = intensity.median()
+    panel = dept_failures.merge(intensity, left_on="dept", right_index=True, how="inner")
+    panel["treated"] = (panel["zfrr_share"] >= threshold).astype(int)
+    panel["post"] = (panel["date"] >= ECB_FIRST_HIKE).astype(int)
+    panel["did"] = panel["post"] * panel["treated"]
+    panel["in_baseline"] = panel["date"].between(BASELINE_START, BASELINE_END)
+    panel["in_sample"] = panel["in_baseline"] | (panel["date"] >= ECB_FIRST_HIKE)
+    return panel.sort_values(["dept", "date"]).reset_index(drop=True)
