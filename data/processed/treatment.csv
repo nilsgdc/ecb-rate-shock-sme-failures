@@ -1,0 +1,10 @@
+,bank_dependence,treated,label
+AZ,80.60000000000001,True,Agriculture
+I,71.7,True,Accommodation & food
+PS,68.83333333333334,True,"Education, health, personal services"
+MN,61.26666666666667,True,Business services
+G,60.03333333333333,True,Trade & auto repair
+FZ,59.36666666666667,False,Construction
+BE,38.45,False,Industry
+JZ,31.7,False,Information & communication
+H,27.73333333333333,False,Transport & storage
