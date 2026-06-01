@@ -85,9 +85,13 @@ def build_panel(failures: pd.DataFrame, treatment: pd.DataFrame) -> pd.DataFrame
     return panel.sort_values(["sector", "date"]).reset_index(drop=True)
 
 
-def zfrr_intensity_by_department(frr: pd.DataFrame) -> pd.Series:
-    """Share of a department's communes classified FRR (treatment intensity)."""
-    return frr.groupby("dept")["classified"].mean().rename("zfrr_share")
+def zfrr_intensity_by_department(frr: pd.DataFrame, col: str = "classified") -> pd.Series:
+    """
+    Share of a department's communes classified FRR (treatment intensity).
+    `col` selects the definition: "classified" = FRR socle or + (codes 4-5, default),
+    "frr_any" = any FRR status (codes 1-5, used as a robustness check).
+    """
+    return frr.groupby("dept")[col].mean().rename("zfrr_share")
 
 
 def build_dept_panel(dept_failures: pd.DataFrame, intensity: pd.Series,

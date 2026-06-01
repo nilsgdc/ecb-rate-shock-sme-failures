@@ -147,11 +147,16 @@ def load_failures_by_department() -> pd.DataFrame:
             .sort_values(["dept", "date"]).reset_index(drop=True))
 
 
-# Observatoire des Territoires FRR code -> meaning. The codes are not documented in
-# the export; the mapping below is inferred from the exact match between code counts
-# and the official published figures (FRR+ ~4,500; FRR socle+plus ~17,700; ZRR
-# transitional ~2,168). To be confirmed against the OdT legend.
-FRR_CODE_MAP = {"5": "FRR+", "4": "FRR socle", "1": "ZRR transitional"}
+# Observatoire des Territoires FRR code -> meaning (confirmed against the OdT legend).
+# Codes 4 (FRR socle) and 5 (FRR+) are the two official classification levels and make
+# up the headline ~17,700 FRR communes; codes 1-3 are partial / beneficiary statuses.
+FRR_CODE_MAP = {
+    "1": "FRR beneficiary",
+    "2": "FRR beneficiary (partial)",
+    "3": "FRR classified (partial)",
+    "4": "FRR socle",
+    "5": "FRR+",
+}
 
 
 def load_frr_communes() -> pd.DataFrame:
@@ -160,9 +165,8 @@ def load_frr_communes() -> pd.DataFrame:
     (Observatoire des Territoires export).
 
     Returns: codgeo, dept, frr_code, frr_label, classified (FRR socle or +),
-    frr_plus (FRR+ only). The file has title rows and an undocumented numeric
-    coding, so rows are filtered to valid INSEE commune codes and mapped via
-    FRR_CODE_MAP.
+    frr_any (any FRR status, codes 1-5), frr_plus (FRR+ only). The file has title
+    rows, so rows are filtered to valid INSEE commune codes and mapped via FRR_CODE_MAP.
     """
     raw = pd.read_csv(ZFRR_DIR / "data.csv", sep=";", encoding="utf-8",
                       dtype=str, header=None)
@@ -173,5 +177,7 @@ def load_frr_communes() -> pd.DataFrame:
     df["frr_label"] = df["frr_code"].map(FRR_CODE_MAP).fillna("not classified")
     df["dept"] = df["codgeo"].map(_commune_to_dept)
     df["classified"] = df["frr_code"].isin(["4", "5"])
+    df["frr_any"] = df["frr_code"].isin(["1", "2", "3", "4", "5"])
     df["frr_plus"] = df["frr_code"] == "5"
-    return df[["codgeo", "dept", "frr_code", "frr_label", "classified", "frr_plus"]]
+    return df[["codgeo", "dept", "frr_code", "frr_label",
+               "classified", "frr_any", "frr_plus"]]
