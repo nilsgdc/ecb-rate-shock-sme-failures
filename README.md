@@ -203,14 +203,15 @@ annual panels to `data/processed/`; 03 and 04 read them and produce the figures.
 ## Limitations
 
 1. **PGE / COVID rebound** — the dominant confounder; addressed by dropping 2020–2022 and the annual December sampling, so retained post observations lie fully after the hike.
-2. **Few sectors** — only nine NAF sectors; even with the wild cluster bootstrap, the sectoral test has low power and is suggestive only.
+2. **Few sectors** — only nine NAF sectors; even with the wild cluster bootstrap the sectoral test has low power (with 9 clusters there are just 2⁹ = 512 distinct sign vectors, so the bootstrap p-value is itself coarse). Read as suggestive.
 3. **Treatment proxy** — bank-debt share stands in for rate exposure (the maturity split is unavailable by sector in open data); industry and personal services aggregate two FIBEN sub-sectors with a simple mean.
 4. **Territorial granularity** — department failures are all-firms (no PME breakdown at that level; SMEs are ~99% of firms) and ZFRR intensity is unweighted by population.
-5. **Pre-trends** — the event study shows 2019 departs from the otherwise flat 2015–2018 pre-trend, so the territorial DiD should be read with caution; combined with the non-robustness to firm-weighting, the evidence does not support a causal claim.
+5. **Pre-trends are not clean** — the event study shows a large jump (~0.5 log) in the treated–control gap between 2018 and 2019: 2015–2018 are mutually flat but 2019 is anomalous (plausibly the annual volatility of small-department failure counts). This is large enough to question the territorial identification itself. Combined with the loss of significance under firm-weighting and the metropolitan-only specification, the evidence does **not** support a causal claim — the project's honest conclusion is a null.
 6. **Firm stock** — FLORES is a 2024 snapshot used as a fixed weight/denominator.
+7. **Reproducibility** — the annual processed panels are committed, so notebook 03 runs from a fresh clone; notebooks 01/02/04 read the raw files (gitignored) and require the downloads listed under *How to run*.
 
 ---
 
 ## Stack
 
-Python · pandas · statsmodels · matplotlib · seaborn · Jupyter
+Python · pandas · NumPy · statsmodels · matplotlib · Jupyter

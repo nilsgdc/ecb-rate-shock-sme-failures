@@ -62,8 +62,10 @@ def load_failures() -> pd.DataFrame:
     df = _read_bdf(BDF_DIR / "failures_by_sector_size.csv")
     df = df[
         (df["REF_AREA"] == "FR")
+        & (df["FREQ"] == "M")
         & (df["DIREN_TAILLENT"] == "PM")
         & (df["DIREN_SECTACT"] != "ZZ")
+        & df["time_period"].str.match(r"^\d{4}-\d{2}$", na=False)
     ].copy()
     df["date"] = pd.to_datetime(df["time_period"], format="%Y-%m")
     out = df[["date", "DIREN_SECTACT", "value"]].rename(
