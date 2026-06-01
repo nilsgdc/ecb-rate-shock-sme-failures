@@ -181,3 +181,27 @@ def load_frr_communes() -> pd.DataFrame:
     df["frr_plus"] = df["frr_code"] == "5"
     return df[["codgeo", "dept", "frr_code", "frr_label",
                "classified", "frr_any", "frr_plus"]]
+
+
+def load_firm_counts_by_department() -> pd.Series:
+    """
+    Total number of establishments per department, from INSEE FLORES (2024 snapshot).
+
+    Used to weight the territorial regression by firm stock (effect on the average
+    firm rather than the average department) and to express failures as a rate.
+    Sums local units (UNIT_LOC) across all sectors, all size bands (_T), over communes.
+    Returns a Series indexed by department code.
+    """
+    f = (SIRENE_DIR / "DS_FLORES_A38_2024_CSV_FR" / "DS_FLORES_A38_2024_data.csv")
+    df = pd.read_csv(
+        f, sep=";", dtype=str,
+        usecols=["GEO", "GEO_OBJECT", "NUMBER_EMPL", "FLORES_MEASURE", "OBS_VALUE"],
+    )
+    df = df[
+        (df["GEO_OBJECT"] == "COM")
+        & (df["FLORES_MEASURE"] == "UNIT_LOC")
+        & (df["NUMBER_EMPL"] == "_T")
+    ].copy()
+    df["n"] = pd.to_numeric(df["OBS_VALUE"], errors="coerce")
+    df["dept"] = df["GEO"].map(_commune_to_dept)
+    return df.groupby("dept")["n"].sum().rename("firm_count")

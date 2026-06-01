@@ -58,6 +58,8 @@ its own analysis. Departments are split at the median share of their communes cl
 |----------|-------|
 | DiD — high vs low ZFRR intensity (median split, ~100 depts) | **−8.8%** (p = 0.026) |
 | DiD — continuous ZFRR intensity (per +1.0 share) | −18.1% (p = 0.010) |
+| DiD — weighted by firm stock (effect on the average *firm*) | −3.1% (p = 0.29, ns) |
+| Broad FRR definition (codes 1–5) | −8.7% (p = 0.028) |
 | Placebo — fake 2018 break | −2.6% (p = 0.23, not significant) |
 
 With around a hundred departments the inference is far better powered than the nine-sector
@@ -66,6 +68,12 @@ hike — the effect is negative and significant, i.e. more-rural departments saw
 post-2022 rise in failures. This mirrors the sectoral result, plausibly because rural
 economies are less business-dense and weighted toward heavily-supported activities such as
 agriculture.
+
+**Important nuance.** Weighting departments by their number of firms (INSEE FLORES) — i.e.
+the effect on the *average firm* rather than the *average department* — attenuates the
+estimate to −3.1% and removes significance. The territorial effect is therefore largely a
+*small-department* phenomenon: for the typical firm (concentrated in larger, urban
+departments) the rate shock did not measurably change failures by ZFRR status.
 
 ![Territorial DiD decomposition](outputs/dept_did_decomposition.png)
 
