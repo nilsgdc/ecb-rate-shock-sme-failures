@@ -1,8 +1,9 @@
 # ECB Rate Shock & SME Failures — A Causal Study of French Firms
 
-Difference-in-differences estimate of whether the 2022 ECB rate hikes accelerated
-failures among French SMEs in bank-credit-dependent sectors, and whether the effect
-was stronger in economically fragile regions.
+A difference-in-differences study of whether the 2022 ECB rate hikes accelerated
+failures among French SMEs in bank-credit-dependent sectors and in economically
+fragile regions. The rigorous answer is **no robust effect** — and the way the
+apparent effects dissolve under scrutiny is the point of the project.
 
 ---
 
@@ -15,65 +16,69 @@ was stronger in economically fragile regions.
 
 ---
 
-## Key findings (sectoral analysis)
+## Design in one paragraph
+
+The outcome is the Banque de France 12-month rolling cumulative count of failures.
+Sampled monthly it is heavily autocorrelated and its early post-hike values still
+contain pre-hike months, so all regressions run on an **annual non-overlapping**
+panel: each December = that calendar year's total. Baseline years are 2015–2019,
+post years 2023 onward; 2020–2022 are dropped (COVID/PGE and the 2022 transition
+year). Outcome `log(1 + failures)`, unit fixed effects, SE clustered by unit.
+
+---
+
+## Key findings — sectoral (9 NAF sectors)
+
+With only nine sectors, ordinary cluster-robust p-values are invalid, so inference
+uses a **wild cluster restricted bootstrap** (Cameron-Gelbach-Miller).
 
 | Estimate | Value |
 |----------|-------|
-| Common post-2022 change in failures (all sectors) | +8% |
-| DiD — median split, 9 sectors | **−8.1%** (p = 0.35, not significant) |
-| DiD — sharp split (top-3 vs bottom-3 dependence) | −15.1% (p = 0.08) |
-| Placebo — fake 2018 break in the baseline | +1.2% (p = 0.87) |
+| DiD — bank-dependent vs others (median split) | −9.7% (wild-bootstrap p = 0.34) |
+| DiD — sharp split (top-3 vs bottom-3 dependence) | −16.6% (p = 0.28) |
+| Placebo — fake 2018 break in the baseline | −0.3% (p = 0.96) |
 
-After the July 2022 hike, SME failures rose broadly across all sectors. But the
-bank-credit-dependent sectors did **not** experience a larger increase — if anything
-the point estimates lean slightly negative. No DiD estimate is significant at
-conventional levels (only nine sectors limit statistical power), and the baseline
-placebo is clean, which supports the identification. On this evidence the rate shock
-did not disproportionately accelerate failures among bank-dependent SMEs in the
-18 months after the first hike — a plausible reading is that the most bank-dependent
-sectors (hospitality, retail, agriculture) were also the most heavily cushioned by
-state-guaranteed loans.
+The point estimates are negative (bank-dependent sectors did **not** fail more, if
+anything less) but **none is statistically significant**. The placebo is clean.
+With nine sectors this analysis is suggestive only.
 
 ![Treatment vs control by bank-credit dependence](outputs/treatment_split.png)
 
 *Sectors split at the median bank-debt share: treated (red) vs control (grey).*
 
-![Failures by group with the excluded COVID/PGE window](outputs/panel_windows.png)
-
-*Sector-mean failures (indexed to 2019). Parallel pre-2020 trends; the grey band (2020–mid-2022) is excluded; the dashed line is the July 2022 hike.*
-
-![DiD decomposition](outputs/did_decomposition.png)
-
-*Baseline vs post-hike means for treated and control, with the counterfactual and the resulting difference-in-differences gap.*
-
 ---
 
-## Key findings (territorial analysis)
+## Key findings — territorial (≈100 departments)
 
-A separate department-level difference-in-differences. Failures are available by sector
-nationally *or* by department for all firms, never crossed, so the ZFRR equity question is
-its own analysis. Departments are split at the median share of their communes classified ZFRR.
+A separate department-level DiD (failures exist by sector nationally *or* by
+department for all firms, never crossed). Departments are split at the median share
+of communes classified ZFRR.
 
 | Estimate | Value |
 |----------|-------|
-| DiD — high vs low ZFRR intensity (median split, ~100 depts) | **−8.8%** (p = 0.026) |
-| DiD — continuous ZFRR intensity (per +1.0 share) | −18.1% (p = 0.010) |
-| DiD — weighted by firm stock (effect on the average *firm*) | −3.1% (p = 0.29, ns) |
-| Broad FRR definition (codes 1–5) | −8.7% (p = 0.028) |
-| Placebo — fake 2018 break | −2.6% (p = 0.23, not significant) |
+| DiD — high vs low ZFRR (median split) | **−8.1%** (p = 0.034) |
+| DiD — continuous ZFRR intensity (per +1 SD) | −6.4% (p = 0.007) |
+| Weighted by firm stock (effect on the average *firm*) | −2.3% (p = 0.53, ns) |
+| Broad FRR definition (codes 1–5) | −8.8% (p = 0.021) |
+| Metropolitan departments only (drop overseas) | −4.2% (p = 0.10, ns) |
+| Placebo — fake 2018 break | −2.4% (p = 0.31, ns) |
 
-With around a hundred departments the inference is far better powered than the nine-sector
-analysis. Failures did **not** accelerate more in fragile (ZFRR) departments after the
-hike — the effect is negative and significant, i.e. more-rural departments saw a *smaller*
-post-2022 rise in failures. This mirrors the sectoral result, plausibly because rural
-economies are less business-dense and weighted toward heavily-supported activities such as
-agriculture.
+The simple DiD is negative and significant — high-ZFRR (rural/fragile) departments
+saw a *smaller* post-2022 rise in failures, the opposite of the equity concern.
+**But the effect is not robust.** It loses significance when departments are
+weighted by their firm stock (the average *firm* rather than the average
+*department*) and when overseas departments are dropped; the event study shows the
+treated–control gap was already shifting before the hike (2019 stands apart from
+the otherwise flat 2015–2018 pre-trend).
 
-**Important nuance.** Weighting departments by their number of firms (INSEE FLORES) — i.e.
-the effect on the *average firm* rather than the *average department* — attenuates the
-estimate to −3.1% and removes significance. The territorial effect is therefore largely a
-*small-department* phenomenon: for the typical firm (concentrated in larger, urban
-departments) the rate shock did not measurably change failures by ZFRR status.
+**Bottom line: no robust evidence** that the rate shock disproportionately raised
+SME failures in bank-dependent sectors or fragile territories. The one significant
+headline is concentrated in small and overseas departments and does not survive
+firm-weighting or a clean pre-trend.
+
+![Event study](outputs/dept_event_study.png)
+
+*Treated-group deviation by year (ref 2019). 2015–2018 roughly flat; 2020–2022 dropped.*
 
 ![Territorial DiD decomposition](outputs/dept_did_decomposition.png)
 
@@ -98,46 +103,36 @@ No official list exists. Each NAF sector is ranked by the **share of bank debt i
 financial debt** (bank vs bond vs leasing) — the FIBEN ratio *part des dettes bancaires* —
 averaged over 2018–2021. Bank debt is the channel through which ECB rate hikes reach firms:
 bank lending rates reprice, whereas bonds are fixed at issuance and leasing is contractual.
-Sectors most reliant on bank debt are therefore the most exposed to monetary tightening.
-Sectors above the chosen threshold form the treatment group; financial leverage
-(*taux d'endettement financier*) and working-capital need (*BFR*) are used as robustness checks.
 
-The maturity split (short-term vs long-term credit) is not available by sector in open
-Banque de France data, which reports debt by instrument rather than by maturity; bank-debt
-share is the available proxy for exposure to the bank-lending-rate channel.
+The maturity split (short- vs long-term credit) is not available by sector in open Banque
+de France data, which reports debt by instrument rather than by maturity; bank-debt share
+is the available proxy for exposure to the bank-lending-rate channel.
 
 ### Economically fragile regions
 
 Municipalities classified *Zone France Ruralités Revitalisation* (ZFRR) under the 2024
 budget law (article 73, in force since 1 July 2024), which replaced the former ZRR, BER
-and ZORCOMIR. Classification rests on a synthetic index of income, population and
-employment over at least ten years; the lowest-index municipalities are classified ZFRR+.
+and ZORCOMIR. Treatment intensity per department = share of its communes classified FRR
+socle or + (Observatoire des Territoires codes 4–5).
 
 ---
 
 ## Method
 
-Difference-in-differences on monthly business-failure counts by sector and firm size.
-
 - **Treatment date:** July 2022 — the first ECB policy-rate hike.
-- **Baseline:** 2015–2019.
-- **Treatment group:** NAF sectors with high bank-credit dependence; **control:** low-dependence sectors.
-- **Dependent variable:** monthly failures (Banque de France definition, below).
-- **Inference:** OLS in logs with sector fixed effects, standard errors clustered by sector.
-- **Territorial analysis (separate):** department-level failures against each department's ZFRR intensity, around the same July 2022 break. Run as its own analysis because failures are available either by sector (national) or by department (all sectors), never crossed.
+- **Sample:** annual non-overlapping (December totals); baseline 2015–2019, post 2023+, 2020–2022 dropped.
+- **Outcome:** `log(1 + annual failures)` with unit fixed effects.
+- **Inference:** SE clustered by unit; for the 9-sector analysis, a wild cluster restricted bootstrap (valid with few clusters).
+- **Robustness:** sharp treatment contrast, continuous intensity, firm-stock weighting, broad FRR definition, metropolitan-only, an event study for pre-trends, and a baseline placebo.
 
----
-
-## Separating the rate effect from the COVID/PGE rebound
+### Separating the rate effect from the COVID/PGE rebound
 
 State-guaranteed loans (*Prêts Garantis par l'État*, 2020–2021) suppressed failures during
-the pandemic and produced a rebound in 2022–2023 that overlaps the rate effect. The analysis
-separates the two by anchoring the baseline on 2015–2019 and treating 2020–2021 as an
-excluded anomaly window.
+the pandemic and produced a rebound that overlaps the rate effect. The annual design drops
+2020–2022 entirely, so neither the suppressed years nor the rebound ramp enters the panel,
+and the December sampling keeps every retained post observation fully after the hike.
 
----
-
-## Definition of failure
+### Definition of failure
 
 A failure (*défaillance*) is the opening of a *redressement* or *liquidation judiciaire*
 following a declaration of cessation of payments (Banque de France / INSEE). Voluntary
@@ -150,15 +145,15 @@ closures, deregistrations and disposals are excluded.
 ```
 ├── notebooks/
 │   ├── 01_exploration.ipynb    # Sector debt structure, failures, ZFRR, rates
-│   ├── 02_cleaning.ipynb       # Treatment-group construction, baseline, exports
-│   ├── 03_analysis.ipynb       # Sectoral DiD, robustness, placebo
-│   └── 04_territorial.ipynb    # Department-level ZFRR difference-in-differences
+│   ├── 02_cleaning.ipynb       # Treatment split, annual panel construction
+│   ├── 03_analysis.ipynb       # Sectoral DiD + wild cluster bootstrap
+│   └── 04_territorial.ipynb    # Department DiD, event study, robustness
 ├── src/
 │   ├── data_loader.py          # Loading functions for all datasets
-│   └── cleaning.py             # Cleaning and feature construction
+│   └── cleaning.py             # Treatment, annual panel, wild cluster bootstrap
 ├── data/
-│   ├── raw/                    # Source files
-│   └── processed/              # Cleaned exports
+│   ├── raw/                    # Source files (download, see below)
+│   └── processed/              # Annual panels exported by the notebooks
 ├── outputs/                    # Generated figures
 ├── requirements.txt
 └── README.md
@@ -170,25 +165,52 @@ closures, deregistrations and disposals are excluded.
 
 | Dataset | Source | Use |
 |---------|--------|-----|
-| Sector debt structure (bank / bond / leasing shares), annual — FIBEN balance-sheet ratios | [Banque de France — Webstat](https://webstat.banque-france.fr/) | Bank-credit-dependence ratio (treatment definition) |
-| Business failures by sector and firm size, monthly | [Banque de France — Webstat](https://webstat.banque-france.fr/) | Dependent variable |
-| ECB policy-rate history | [ECB](https://www.ecb.europa.eu/) / Banque de France | Treatment date (July 2022) |
-| ZFRR / ZFRR+ municipality list | [data.gouv.fr](https://www.data.gouv.fr/) | Territorial classification |
-| SME counts by sector | [INSEE](https://www.insee.fr/) | Weighting by SMEs at risk |
-| Sectoral & price indices | [INSEE](https://www.insee.fr/) | Control variables |
+| Sector debt structure (FIBEN balance-sheet ratios), annual | [Banque de France — Webstat](https://webstat.banque-france.fr/) | Bank-credit-dependence (treatment) |
+| Business failures by sector & size and by department, monthly | [Banque de France — Webstat](https://webstat.banque-france.fr/) | Dependent variable |
+| ECB policy-rate history | [FRED](https://fred.stlouisfed.org/) (ECB series) | Treatment date (July 2022) |
+| FRR commune classification | [Observatoire des Territoires](https://www.observatoire-des-territoires.gouv.fr/) | Territorial fragility |
+| Establishments by commune (FLORES) | [INSEE](https://www.insee.fr/) | Firm-stock weight / failure rate |
+
+All sources are open (French *Licence Ouverte* / public statistics).
+
+---
+
+## How to run
+
+```bash
+python -m venv ecb-env
+ecb-env\Scripts\activate            # Windows  (source ecb-env/bin/activate on macOS/Linux)
+pip install -r requirements.txt
+jupyter notebook
+```
+
+Raw data is not redistributed; place the downloads under `data/raw/`:
+
+- `data/raw/bce_rates/` — ECB main-refi and deposit-facility CSVs from FRED
+  (`fredgraph.csv?id=ECBMRRFR` and `id=ECBDFR`).
+- `data/raw/banque_de_france/failures_by_sector_size.csv` — Webstat *Défaillances
+  d'entreprises*, long CSV export.
+- `data/raw/banque_de_france/sector_debt_structure.csv` — Webstat *Bilans
+  d'entreprises* (FIBEN ratios), long CSV export.
+- `data/raw/zfrr/data.csv` — FRR commune classification, Observatoire des Territoires export.
+- `data/raw/sirene/DS_FLORES_A38_2024_CSV_FR/` — INSEE FLORES (establishments by commune & sector).
+
+Then run the notebooks in order: `01` → `02` → `03` → `04`. Notebook 02 writes the
+annual panels to `data/processed/`; 03 and 04 read them and produce the figures.
 
 ---
 
 ## Limitations
 
-1. **PGE / COVID rebound** — the main confounder; addressed by the baseline and exclusion-window design above.
-2. **Treatment proxy** — open Banque de France data reports debt by instrument (bank/bond/leasing), not by maturity, so bank-credit dependence proxies exposure to the bank-lending-rate channel rather than measuring short-term credit directly.
-3. **Treatment threshold** — the bank-credit-dependence cut-off is a modelling choice, tested against alternative thresholds.
-4. **Aggregation** — failures are observed by sector and size class, not per firm.
-5. **ZFRR timing** — the classification is in force from July 2024 and is used as a proxy for territorial fragility over 2022–2023.
+1. **PGE / COVID rebound** — the dominant confounder; addressed by dropping 2020–2022 and the annual December sampling, so retained post observations lie fully after the hike.
+2. **Few sectors** — only nine NAF sectors; even with the wild cluster bootstrap, the sectoral test has low power and is suggestive only.
+3. **Treatment proxy** — bank-debt share stands in for rate exposure (the maturity split is unavailable by sector in open data); industry and personal services aggregate two FIBEN sub-sectors with a simple mean.
+4. **Territorial granularity** — department failures are all-firms (no PME breakdown at that level; SMEs are ~99% of firms) and ZFRR intensity is unweighted by population.
+5. **Pre-trends** — the event study shows 2019 departs from the otherwise flat 2015–2018 pre-trend, so the territorial DiD should be read with caution; combined with the non-robustness to firm-weighting, the evidence does not support a causal claim.
+6. **Firm stock** — FLORES is a 2024 snapshot used as a fixed weight/denominator.
 
 ---
 
 ## Stack
 
-Python · pandas · geopandas · statsmodels · matplotlib · seaborn · Jupyter
+Python · pandas · statsmodels · matplotlib · seaborn · Jupyter
