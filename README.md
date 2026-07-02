@@ -153,7 +153,9 @@ closures, deregistrations and disposals are excluded.
 │   ├── 01_exploration.ipynb    # Sector debt structure, failures, ZFRR, rates
 │   ├── 02_cleaning.ipynb       # Treatment split, annual panel construction
 │   ├── 03_analysis.ipynb       # Sectoral DiD + wild cluster bootstrap
-│   └── 04_territorial.ipynb    # Department DiD, event study, robustness
+│   ├── 04_territorial.ipynb    # Department DiD, event study, robustness
+│   └── 05_sql.ipynb            # The preparation redone in SQL (DuckDB)
+├── sql/                        # Documented queries run by notebook 05
 ├── src/
 │   ├── data_loader.py          # Loading functions for all datasets
 │   └── cleaning.py             # Treatment, annual panel, wild cluster bootstrap
@@ -217,4 +219,4 @@ the figures.
 
 ## Stack
 
-Python · pandas · NumPy · statsmodels · matplotlib · Jupyter
+Python · pandas · NumPy · statsmodels · SQL (DuckDB) · matplotlib · Jupyter

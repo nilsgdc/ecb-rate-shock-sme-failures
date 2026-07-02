@@ -1,4 +1,4 @@
-,bank_dependence,treated,label
+sector,bank_dependence,treated,label
 AZ,80.60000000000001,True,Agriculture
 I,71.7,True,Accommodation & food
 PS,68.83333333333334,True,"Education, health, personal services"
