@@ -5,6 +5,8 @@ failures among French SMEs in bank-credit-dependent sectors and in economically
 fragile regions. Short answer: **no robust effect**. The headline estimates fade
 once they are weighted by firm counts and checked against pre-trends.
 
+[![Run on Kaggle](https://kaggle.com/static/images/open-in-kaggle.svg)](https://www.kaggle.com/code/eternalia/ecb-rate-shock-and-sme-failures)
+
 ---
 
 ## Research question
