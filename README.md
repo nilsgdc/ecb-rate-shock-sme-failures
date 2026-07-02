@@ -201,7 +201,9 @@ d'établissements et effectifs salariés en 38 grands secteurs* (communal CSV) f
 
 Run the notebooks in order: `01` → `02` → `03` → `04`. Notebook 02 writes the
 annual panels to `data/processed/`. Notebooks 03 and 04 read them and produce
-the figures.
+the figures. Notebook `05` replays the main preparation and summary steps in
+SQL (DuckDB) from the queries in `sql/`, and its raw 2x2 estimate matches the
+regression coefficient of notebook 03 to the fourth decimal.
 
 ---
 
