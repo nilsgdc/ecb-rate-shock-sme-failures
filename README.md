@@ -10,9 +10,9 @@ apparent effects dissolve under scrutiny is the point of the project.
 ## Research question
 
 > Did SMEs in sectors that rely heavily on bank credit experience a statistically
-> significant acceleration in failures in the 18 months following the first ECB
-> rate hike (July 2022), relative to their 2015–2019 trend — and is this effect
-> more pronounced in economically fragile regions?
+> significant acceleration in failures in the years following the first ECB rate
+> hike (July 2022), relative to their 2015–2019 trend — and is this effect more
+> pronounced in economically fragile regions?
 
 ---
 
@@ -23,7 +23,9 @@ Sampled monthly it is heavily autocorrelated and its early post-hike values stil
 contain pre-hike months, so all regressions run on an **annual non-overlapping**
 panel: each December = that calendar year's total. Baseline years are 2015–2019,
 post years 2023 onward; 2020–2022 are dropped (COVID/PGE and the 2022 transition
-year). Outcome `log(1 + failures)`, unit fixed effects, SE clustered by unit.
+year). The first post observation (2023) covers months 6–18 after the hike — the
+closest annual counterpart to an "18 months after" window — while 2024–2025 test
+persistence. Outcome `log(1 + failures)`, unit fixed effects, SE clustered by unit.
 
 ---
 
