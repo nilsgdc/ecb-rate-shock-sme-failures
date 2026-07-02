@@ -42,8 +42,8 @@ def bank_credit_dependence(debt_structure: pd.DataFrame) -> pd.Series:
     """
     Share of bank debt in total financial debt per analysis sector, averaged over
     DEPENDENCE_WINDOW. For sectors that map to two FIBEN sub-sectors (industry,
-    personal services) the sub-sector ratios are averaged (simple mean — an
-    approximation, since debt weights are not available at this granularity).
+    personal services) the sub-sector ratios are averaged (simple mean, an
+    approximation since debt weights are not available at this granularity).
 
     Parameters
     ----------

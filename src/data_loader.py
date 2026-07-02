@@ -79,7 +79,7 @@ def load_sector_debt_structure() -> pd.DataFrame:
     """
     Annual FIBEN balance-sheet ratios by NAF sector (France, all firm sizes).
 
-    Keeps BE — the share of bank debt in total financial debt — which defines the
+    Keeps BE, the share of bank debt in total financial debt, which defines the
     treatment group. Returns a tidy frame: year, sector, ratio_code, value.
     """
     df = _read_bdf(BDF_DIR / "sector_debt_structure.csv")

@@ -1,4 +1,4 @@
-# ECB Rate Shock & SME Failures — A Causal Study of French Firms
+# ECB Rate Shock and SME Failures: A Causal Study of French Firms
 
 A difference-in-differences study of whether the 2022 ECB rate hikes accelerated
 failures among French SMEs in bank-credit-dependent sectors and in economically
