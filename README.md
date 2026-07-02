@@ -73,14 +73,14 @@ The simple DiD is negative and significant: high-ZFRR (rural/fragile) department
 saw a *smaller* post-2022 rise in failures, the opposite of the equity concern.
 **But the effect is not robust.** It loses significance when departments are
 weighted by their firm stock (the average *firm* rather than the average
-*department*) and when overseas departments are dropped. The event study also
-shows the treated–control gap was already shifting before the hike (2019 stands
-apart from the otherwise flat 2015–2018 pre-trend).
+*department*) and when overseas departments are dropped. And in the event-study
+specification, which absorbs year effects, the post-hike coefficients are close
+to zero and not significant.
 
 Overall, there is **no robust evidence** that the rate shock disproportionately
 raised SME failures in bank-dependent sectors or fragile territories. The one
-significant headline is concentrated in small and overseas departments and does
-not survive firm-weighting or a clean pre-trend.
+significant headline is concentrated in small and overseas departments and fades
+under firm-weighting and year effects.
 
 ![Event study](outputs/dept_event_study.png)
 
