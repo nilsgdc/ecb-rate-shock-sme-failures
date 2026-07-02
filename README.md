@@ -16,7 +16,7 @@ once they are weighted by firm counts and checked against pre-trends.
 
 ---
 
-## Design in one paragraph
+## Study design
 
 The outcome is the Banque de France 12-month rolling cumulative count of failures.
 Sampled monthly it is heavily autocorrelated and its early post-hike values still
