@@ -146,9 +146,9 @@ def load_failures_by_department() -> pd.DataFrame:
             .sort_values(["dept", "date"]).reset_index(drop=True))
 
 
-# Observatoire des Territoires FRR code -> meaning (confirmed against the OdT legend).
-# Codes 4 (FRR socle) and 5 (FRR+) are the two official classification levels and make
-# up the headline ~17,700 FRR communes; codes 1-3 are partial / beneficiary statuses.
+# Observatoire des Territoires FRR codes. 4 (FRR socle) and 5 (FRR+) are the two
+# official classification levels (~17,700 communes); 1-3 are partial or beneficiary
+# statuses.
 FRR_CODE_MAP = {
     "1": "FRR beneficiary",
     "2": "FRR beneficiary (partial)",
