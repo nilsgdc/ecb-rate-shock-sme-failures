@@ -186,18 +186,14 @@ pip install -r requirements.txt
 jupyter notebook
 ```
 
-Raw data is not redistributed; place the downloads under `data/raw/`:
+Raw data is committed in the repo (all sources are open data), with one exception:
+INSEE FLORES (219 MB, above GitHub's per-file limit). To reproduce the firm-stock
+weighting and failure-rate figure in notebook 04, download *FLORES 2024 — nombre
+d'établissements et effectifs salariés en 38 grands secteurs* (communal CSV) from
+[insee.fr](https://www.insee.fr/) and unzip it to
+`data/raw/sirene/DS_FLORES_A38_2024_CSV_FR/`. Everything else runs from a fresh clone.
 
-- `data/raw/bce_rates/` — ECB main-refi and deposit-facility CSVs from FRED
-  (`fredgraph.csv?id=ECBMRRFR` and `id=ECBDFR`).
-- `data/raw/banque_de_france/failures_by_sector_size.csv` — Webstat *Défaillances
-  d'entreprises*, long CSV export.
-- `data/raw/banque_de_france/sector_debt_structure.csv` — Webstat *Bilans
-  d'entreprises* (FIBEN ratios), long CSV export.
-- `data/raw/zfrr/data.csv` — FRR commune classification, Observatoire des Territoires export.
-- `data/raw/sirene/DS_FLORES_A38_2024_CSV_FR/` — INSEE FLORES (establishments by commune & sector).
-
-Then run the notebooks in order: `01` → `02` → `03` → `04`. Notebook 02 writes the
+Run the notebooks in order: `01` → `02` → `03` → `04`. Notebook 02 writes the
 annual panels to `data/processed/`; 03 and 04 read them and produce the figures.
 
 ---
@@ -210,7 +206,7 @@ annual panels to `data/processed/`; 03 and 04 read them and produce the figures.
 4. **Territorial granularity** — department failures are all-firms (no PME breakdown at that level; SMEs are ~99% of firms) and ZFRR intensity is unweighted by population.
 5. **Pre-trends are not clean** — the event study shows a large jump (~0.5 log) in the treated–control gap between 2018 and 2019: 2015–2018 are mutually flat but 2019 is anomalous (plausibly the annual volatility of small-department failure counts). This is large enough to question the territorial identification itself. Combined with the loss of significance under firm-weighting and the metropolitan-only specification, the evidence does **not** support a causal claim — the project's honest conclusion is a null.
 6. **Firm stock** — FLORES is a 2024 snapshot used as a fixed weight/denominator.
-7. **Reproducibility** — the annual processed panels are committed, so notebook 03 runs from a fresh clone; notebooks 01/02/04 read the raw files (gitignored) and require the downloads listed under *How to run*.
+7. **Reproducibility** — raw data and processed panels are committed; everything runs from a fresh clone except the FLORES-based cells of notebook 04 (one manual download, see *How to run*).
 
 ---
 

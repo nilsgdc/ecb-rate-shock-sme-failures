@@ -18,11 +18,9 @@ dist/
 .ipynb_checkpoints/
 *.ipynb_checkpoints
 
-# Raw data: keep the folder structure, ignore the actual files until we
-# decide which are small enough to commit (see README "Data sources").
-data/raw/**
-!data/raw/**/
-!data/raw/**/.gitkeep
+# Raw data is committed for one-clone reproducibility, except INSEE FLORES
+# (219 MB, over GitHub's 100 MB per-file limit — see README "How to run").
+data/raw/sirene/
 
 # Secrets
 .env
