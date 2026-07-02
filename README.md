@@ -21,11 +21,12 @@ once they are weighted by firm counts and checked against pre-trends.
 The outcome is the Banque de France 12-month rolling cumulative count of failures.
 Sampled monthly it is heavily autocorrelated and its early post-hike values still
 contain pre-hike months, so all regressions run on an **annual non-overlapping**
-panel: each December = that calendar year's total. Baseline years are 2015–2019,
-post years 2023 onward; 2020–2022 are dropped (COVID/PGE and the 2022 transition
-year). The first post observation (2023) covers months 6–18 after the hike, the
-closest annual counterpart to an "18 months after" window; 2024–2025 test
-persistence. Outcome `log(1 + failures)`, unit fixed effects, SE clustered by unit.
+panel: each December = that calendar year's total. Baseline years are 2015–2019
+and post years 2023 onward. 2020–2022 are dropped (COVID/PGE and the 2022
+transition year). The first post observation (2023) covers months 6–18 after the
+hike, the closest annual counterpart to an "18 months after" window, and
+2024–2025 test persistence. Outcome `log(1 + failures)`, unit fixed effects,
+SE clustered by unit.
 
 ---
 
@@ -41,8 +42,9 @@ uses a **wild cluster restricted bootstrap** (Cameron-Gelbach-Miller).
 | Placebo (fake 2018 break in the baseline) | −0.3% (p = 0.96) |
 
 The point estimates are negative (bank-dependent sectors did **not** fail more, if
-anything less) but **none is statistically significant**. The placebo is clean.
-With nine sectors this analysis carries little statistical power on its own.
+anything less) but **none is statistically significant**. The placebo test, which
+pretends the shock happened in 2018, finds nothing, as it should. With nine sectors
+this analysis carries little statistical power on its own.
 
 ![Treatment vs control by bank-credit dependence](outputs/treatment_split.png)
 
@@ -69,9 +71,9 @@ The simple DiD is negative and significant: high-ZFRR (rural/fragile) department
 saw a *smaller* post-2022 rise in failures, the opposite of the equity concern.
 **But the effect is not robust.** It loses significance when departments are
 weighted by their firm stock (the average *firm* rather than the average
-*department*) and when overseas departments are dropped; the event study shows the
-treated–control gap was already shifting before the hike (2019 stands apart from
-the otherwise flat 2015–2018 pre-trend).
+*department*) and when overseas departments are dropped. The event study also
+shows the treated–control gap was already shifting before the hike (2019 stands
+apart from the otherwise flat 2015–2018 pre-trend).
 
 Overall, there is **no robust evidence** that the rate shock disproportionately
 raised SME failures in bank-dependent sectors or fragile territories. The one
@@ -80,7 +82,7 @@ not survive firm-weighting or a clean pre-trend.
 
 ![Event study](outputs/dept_event_study.png)
 
-*Treated-group deviation by year (ref 2019). 2015–2018 roughly flat; 2020–2022 dropped.*
+*Treated-group deviation by year (ref 2019). 2015–2018 roughly flat, 2020–2022 dropped.*
 
 ![Territorial DiD decomposition](outputs/dept_did_decomposition.png)
 
@@ -107,8 +109,8 @@ averaged over 2018–2021. Bank debt is the channel through which ECB rate hikes
 bank lending rates reprice, whereas bonds are fixed at issuance and leasing is contractual.
 
 The maturity split (short- vs long-term credit) is not available by sector in open Banque
-de France data, which reports debt by instrument rather than by maturity; bank-debt share
-is the available proxy for exposure to the bank-lending-rate channel.
+de France data, which reports debt by instrument rather than by maturity, so bank-debt
+share is the available proxy for exposure to the bank-lending-rate channel.
 
 ### Economically fragile regions
 
@@ -122,9 +124,9 @@ socle or + (Observatoire des Territoires codes 4–5).
 ## Method
 
 - **Treatment date:** July 2022, the first ECB policy-rate hike.
-- **Sample:** annual non-overlapping (December totals); baseline 2015–2019, post 2023+, 2020–2022 dropped.
+- **Sample:** annual non-overlapping (December totals). Baseline 2015–2019, post 2023+, 2020–2022 dropped.
 - **Outcome:** `log(1 + annual failures)` with unit fixed effects.
-- **Inference:** SE clustered by unit; for the 9-sector analysis, a wild cluster restricted bootstrap (valid with few clusters).
+- **Inference:** SE clustered by unit. For the 9-sector analysis, a wild cluster restricted bootstrap (valid with few clusters).
 - **Robustness:** sharp treatment contrast, continuous intensity, firm-stock weighting, broad FRR definition, metropolitan-only, an event study for pre-trends, and a baseline placebo.
 
 ### Separating the rate effect from the COVID/PGE rebound
@@ -194,19 +196,20 @@ d'établissements et effectifs salariés en 38 grands secteurs* (communal CSV) f
 `data/raw/sirene/DS_FLORES_A38_2024_CSV_FR/`. Everything else runs from a fresh clone.
 
 Run the notebooks in order: `01` → `02` → `03` → `04`. Notebook 02 writes the
-annual panels to `data/processed/`; 03 and 04 read them and produce the figures.
+annual panels to `data/processed/`. Notebooks 03 and 04 read them and produce
+the figures.
 
 ---
 
 ## Limitations
 
-1. **PGE / COVID rebound:** the dominant confounder; addressed by dropping 2020–2022 and by the annual December sampling, so retained post observations lie fully after the hike.
+1. **PGE / COVID rebound:** the dominant confounder. Handled by dropping 2020–2022 and by the annual December sampling, so retained post observations lie fully after the hike.
 2. **Few sectors:** nine NAF sectors only. Even with the wild cluster bootstrap the sectoral test has low power (9 clusters allow just 2⁹ = 512 distinct sign vectors, so the bootstrap p-value is itself coarse).
-3. **Treatment proxy:** bank-debt share stands in for rate exposure (the maturity split is unavailable by sector in open data); industry and personal services aggregate two FIBEN sub-sectors with a simple mean.
-4. **Territorial granularity:** department failures are all-firms (no PME breakdown at that level; SMEs are ~99% of firms) and ZFRR intensity is unweighted by population.
-5. **Pre-trends are not clean:** the event study shows a large jump (~0.5 log) in the treated–control gap between 2018 and 2019, while 2015–2018 are mutually flat. 2019 is plausibly the annual volatility of small-department failure counts, but the jump is large enough to question the territorial identification. Combined with the loss of significance under firm-weighting and in the metropolitan-only specification, the evidence does not support a causal claim; the conclusion is a null result.
+3. **Treatment proxy:** bank-debt share stands in for rate exposure (the maturity split is unavailable by sector in open data). Industry and personal services aggregate two FIBEN sub-sectors with a simple mean.
+4. **Territorial granularity:** department failures are all-firms (no PME breakdown at that level, and SMEs are ~99% of firms) and ZFRR intensity is unweighted by population.
+5. **Pre-trends are not clean:** the event study shows a large jump (~0.5 log) in the treated–control gap between 2018 and 2019, while 2015–2018 are mutually flat. 2019 is plausibly the annual volatility of small-department failure counts, but the jump is large enough to question the territorial identification. Combined with the loss of significance under firm-weighting and in the metropolitan-only specification, the evidence does not support a causal claim. The conclusion is a null result.
 6. **Firm stock:** FLORES is a 2024 snapshot used as a fixed weight/denominator.
-7. **Reproducibility:** raw data and processed panels are committed; everything runs from a fresh clone except the FLORES-based cells of notebook 04 (one manual download, see *How to run*).
+7. **Reproducibility:** raw data and processed panels are committed. Everything runs from a fresh clone except the FLORES-based cells of notebook 04 (one manual download, see *How to run*).
 
 ---
 
